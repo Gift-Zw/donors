@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% load  static %}
+
+{% block content %}
+
+    <div class="wrapper">
+    {% include 'manager_nav.html' %}
+<main role="main" class="main-content">
+        <div class="container-fluid">
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <h2 class="h3 mb-4 page-title">Beneficiary Profile</h2>
+              <div class="row mt-5 align-items-center">
+                <div class="col-md-3 text-center mb-5">
+                  <div class="avatar avatar-xl">
+                    <img src="{% static 'assets/avatars/face-1.jpg' %}" alt="..." class="avatar-img rounded-circle">
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row align-items-center">
+                    <div class="col-md-7">
+                      <h4 class="mb-1">{{ beneficiary.name }}, {{ beneficiary.category }}</h4>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-md-12">
+                      <p class="text">{{ beneficiary.about }}</p>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="row my-4">
+                <div class="col-md-4">
+                  <div class="card mb-4 shadow">
+                    <div class="card-body my-n3">
+                      <div class="row align-items-center">
+                        <div class="col-3 text-center">
+                          <span class="circle circle-lg bg-light">
+                            <i class="fe fe-map-pin fe-24 text-primary"></i>
+                          </span>
+                        </div> <!-- .col -->
+                        <div class="col mb-5">
+                            <h3 class="h5 mt-4 mb-1">Address</h3>
+                           <p class="small mb-0 text">{{ beneficiary.address }}</p>
+                             <p class="small mb-0 text">{{ beneficiary.city }}</p>
+                            <p class="small mb-0 text">Zimbabwe</p>
+                        </div> <!-- .col -->
+                      </div> <!-- .row -->
+                    </div> <!-- .card-body -->
+                  </div> <!-- .card -->
+                </div> <!-- .col-md-->
+                <div class="col-md-4">
+                  <div class="card mb-4 shadow">
+                    <div class="card-body my-n3">
+                      <div class="row align-items-center">
+                        <div class="col-3 text-center">
+                          <span class="circle circle-lg bg-light">
+                            <i class="fe fe-phone fe-24 text-primary"></i>
+                          </span>
+                        </div> <!-- .col -->
+                        <div class="col mb-5">
+                            <h3 class="h5 mt-4 mb-1">Contact</h3>
+                            <p class="small mb-0 text">{{ beneficiary.cell }}</p>
+                             <p class="small mb-0 text">{{ beneficiary.email }}</p>
+                            <p class="small mb-0 text">{{ beneficiary.manager.email }}</p>
+                        </div> <!-- .col -->
+                      </div> <!-- .row -->
+                    </div> <!-- .card-body -->
+                  </div> <!-- .card -->
+                </div> <!-- .col-md-->
+                <div class="col-md-4">
+                  <div class="card mb-4 shadow">
+                    <div class="card-body my-n3">
+                      <div class="row align-items-center">
+                        <div class="col-3 text-center">
+                          <span class="circle circle-lg bg-light">
+                            <i class="fe fe-map fe-24 text-primary"></i>
+                          </span>
+                        </div> <!-- .col -->
+                        <div class="col mb-4">
+
+                            <h3 class="h5 mt-4 mb-1">Geolocation</h3>
+                              <p class="small mb-0 text">Latitude : {{ beneficiary.latitude }}</p>
+                             <p class="small mb-3 text">Longitude: {{ beneficiary.longitude }}</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ beneficiary.latitude }}, {{ beneficiary.longitude }}" target="_blank"><button class="btn-primary">View on Google Maps</button></a>
+
+
+                        </div> <!-- .col -->
+                      </div> <!-- .row -->
+                    </div> <!-- .card-body -->
+                  </div> <!-- .card -->
+                </div> <!-- .col-md-->
+              </div> <!-- .row-->
+
+              <h6 class="mb-3">Latest Donations</h6>
+
+                 <table class="table table-borderless table-striped">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th><strong>Donor Name</strong></th>
+                            <th><strong>Currency</strong></th>
+                            <th><strong>Amount</strong></th>
+                            <th><strong>Payment Method</strong></th>
+                               <th><strong>Date</strong></th>
+                          </tr>
+                        </thead>
+                        <tbody id="tbody">
+                        {% for donation in recent_donations %}
+                          <tr>
+                            <td>{{ donation.id }}</td>
+                            <td>{{ donation.donor_name }}</td>
+                            <td>{{ donation.currency }}</td>
+                            <td>{{ donation.amount }}</td>
+                            <td>{{ donation.payment_method }}</td>
+                            <td>{{ donation.date }}</td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                      </table>
+            </div> <!-- /.col-12 -->
+          </div> <!-- .row -->
+        </div> <!-- .container-fluid -->
+        <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="defaultModalLabel">Notifications</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="list-group list-group-flush my-n3">
+                  <div class="list-group-item bg-transparent">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <span class="fe fe-box fe-24"></span>
+                      </div>
+                      <div class="col">
+                        <small><strong>Package has uploaded successfull</strong></small>
+                        <div class="my-0 text-muted small">Package is zipped and uploaded</div>
+                        <small class="badge badge-pill badge-light text-muted">1m ago</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="list-group-item bg-transparent">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <span class="fe fe-download fe-24"></span>
+                      </div>
+                      <div class="col">
+                        <small><strong>Widgets are updated successfully</strong></small>
+                        <div class="my-0 text-muted small">Just create new layout Index, form, table</div>
+                        <small class="badge badge-pill badge-light text-muted">2m ago</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="list-group-item bg-transparent">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <span class="fe fe-inbox fe-24"></span>
+                      </div>
+                      <div class="col">
+                        <small><strong>Notifications have been sent</strong></small>
+                        <div class="my-0 text-muted small">Fusce dapibus, tellus ac cursus commodo</div>
+                        <small class="badge badge-pill badge-light text-muted">30m ago</small>
+                      </div>
+                    </div> <!-- / .row -->
+                  </div>
+                  <div class="list-group-item bg-transparent">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <span class="fe fe-link fe-24"></span>
+                      </div>
+                      <div class="col">
+                        <small><strong>Link was attached to menu</strong></small>
+                        <div class="my-0 text-muted small">New layout has been attached to the menu</div>
+                        <small class="badge badge-pill badge-light text-muted">1h ago</small>
+                      </div>
+                    </div>
+                  </div> <!-- / .row -->
+                </div> <!-- / .list-group -->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Clear All</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="defaultModalLabel">Shortcuts</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body px-5">
+                <div class="row align-items-center">
+                  <div class="col-6 text-center">
+                    <div class="squircle bg-success justify-content-center">
+                      <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
+                    </div>
+                    <p>Control area</p>
+                  </div>
+                  <div class="col-6 text-center">
+                    <div class="squircle bg-primary justify-content-center">
+                      <i class="fe fe-activity fe-32 align-self-center text-white"></i>
+                    </div>
+                    <p>Activity</p>
+                  </div>
+                </div>
+                <div class="row align-items-center">
+                  <div class="col-6 text-center">
+                    <div class="squircle bg-primary justify-content-center">
+                      <i class="fe fe-droplet fe-32 align-self-center text-white"></i>
+                    </div>
+                    <p>Droplet</p>
+                  </div>
+                  <div class="col-6 text-center">
+                    <div class="squircle bg-primary justify-content-center">
+                      <i class="fe fe-upload-cloud fe-32 align-self-center text-white"></i>
+                    </div>
+                    <p>Upload</p>
+                  </div>
+                </div>
+                <div class="row align-items-center">
+                  <div class="col-6 text-center">
+                    <div class="squircle bg-primary justify-content-center">
+                      <i class="fe fe-users fe-32 align-self-center text-white"></i>
+                    </div>
+                    <p>Users</p>
+                  </div>
+                  <div class="col-6 text-center">
+                    <div class="squircle bg-primary justify-content-center">
+                      <i class="fe fe-settings fe-32 align-self-center text-white"></i>
+                    </div>
+                    <p>Settings</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main> <!-- main -->
+    </div>
+
+{% endblock content %}

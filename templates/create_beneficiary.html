@@ -1,0 +1,97 @@
+{% include 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="wrapper">
+
+ <main role="main" class="main-content">
+        <div class="container-fluid">
+          <div class="row justify-content-center mt-4">
+
+            <div class="col-12 col-xl-12">
+              <h2 class="page-title">Register Beneficiary</h2>
+              <p class="text">This form is designed for registering of new beneficiaries. To ensure the accuracy and effectiveness of your form, please fill out all required fields completely and truthfully. <br> Once your form is submitted, it will be reviewed by our team. You can track the status of your report and any updates through your account dashboard. </p>
+              <div class="card-deck">
+              </div> <!-- / .card-desk-->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card shadow mb-4">
+                    <div class="card-header">
+                      <strong class="card-title">All fields are required.</strong>
+                    </div>
+                    <div class="card-body">
+                      <form method="post" enctype="multipart/form-data" action="{% url 'add-beneficiary' %}">
+                          {% csrf_token %}
+                          <div class="form-row">
+                            <div class="form-group col-md-6">
+                            <label for="inputPhone">Name</label>
+                            {{ form.name }}
+                          </div>
+                             <div class="form-group col-md-6">
+                            <label for="warradasdnty">Category</label>
+                            {{ form.category }}
+                          </div>
+                          </div>
+                        <div class="form-row">
+                           <div class="form-group col-md-6">
+                            <label for="inputValue">Email</label>
+                            {{ form.email }}
+                          </div>
+                          <div class="form-group col-md-6">
+                          <label for="inputCondition">Cell</label>
+                          {{ form.cell }}
+                        </div>
+                          </div>
+                          <div class="form-row">
+                             <div class="form-group col-md-8">
+                            <label for="inputCurrency">Address</label>
+                            {{ form.address }}
+                          </div>
+                              <div class="form-group col-md-4">
+                            <label for="inputCurrsency">City</label>
+                            {{ form.city }}
+                          </div>
+                          </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-3">
+                          <label for="inputRoom">Logo</label>
+                          {{ form.logo }}
+                        </div>
+                          <div class="form-group col-md-3">
+                          <label for="inputRoom">Cover Image</label>
+                          {{ form.logo }}
+                        </div>
+                            <div class="form-group col-md-3">
+                          <label for="inputRoom">Latitude</label>
+                          {{ form.latitude }}
+                        </div>
+                         <div class="form-group col-md-3">
+                            <label for="warranty">Longitude</label>
+                            {{ form.longitude }}
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-12">
+                            <label for="inputVendor">About</label>
+                                {{ form.about }}
+                          </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit Form</button>
+                      </form>
+                    </div> <!-- /. card-body -->
+                  </div> <!-- /. card -->
+                </div> <!-- /. col -->
+              </div> <!-- /. end-section -->
+             </div> <!-- .col-12 -->
+          </div> <!-- .row -->
+        </div> <!-- .container-fluid -->
+      </main>
+
+</div>
+
+{% include 'scripts.html' %}
+
+{% endblock content %}

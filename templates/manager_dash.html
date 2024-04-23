@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+    <div class="wrapper">
+            {% include 'manager_nav.html' %}
+      <main role="main" class="main-content">
+
+        <div class="container-fluid">
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <div class="row align-items-center mb-2">
+                <div class="col">
+                  <h2 class="h5 page-title">Welcome {{ request.user.full_name }}. You are logged into {{ beneficiary.name }}</h2>
+                </div>
+                <div class="col-auto">
+                  <form class="form-inline">
+                    <div class="form-group d-none d-lg-inline">
+                      <label for="reportrange" class="sr-only">Date Ranges</label>
+                      <div id="reportrange" class="px-2 py-2 text-muted">
+                        <span class="small"></span>
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+              <div class="row items-align-baseline">
+                 <div class="col-12 col-md-6">
+                  <div class="card shadow mb-4">
+                    <div class="card-header">
+                     <h5> <strong class="card-title mb-0">Donation Payment Methods</strong></h5>
+                    </div>
+                    <div class="card-body text-center">
+                      <div id="donutChart1"></div>
+                    </div> <!-- /.card-body -->
+                  </div> <!-- /.card -->
+                </div> <!-- .col -->
+                 <div class="col-12 col-md-6">
+                  <div class="card shadow mb-4">
+                    <div class="card-header">
+                     <h5> <strong class="card-title mb-0">Donation Currency Distribution</strong></h5>
+                    </div>
+                    <div class="card-body text-center">
+                      <div id="donutChart2"></div>
+                    </div> <!-- /.card-body -->
+                  </div> <!-- /.card -->
+                </div> <!-- /. co
+                  </div>  /.card -->
+                </div> <!-- /.
+                  </div>  /.card -->
+                </div> <!-- /. col -->
+                <!-- Recent Activity -->
+                 <!-- / .col-md-6 -->
+                <!-- Striped rows -->
+                <div class="col-md-12 col-lg-12">
+                  <div class="card shadow">
+                    <div class="card-header">
+                      <strong class="card-title">Recent Online Donations</strong>
+                      <a class="float-right small text-muted" href="#">View all</a>
+                    </div>
+                    <div class="card-body my-n2">
+                                            <table class="table table-striped table-hover table-borderless">
+                        <thead>
+                          <tr>
+                            <th><strong>#</strong></th>
+                            <th><strong>Donor Name</strong></th>
+                            <th><strong>Currency</strong></th>
+                            <th><strong>Amount</strong></th>
+                            <th><strong>Payment Method</strong></th>
+                               <th><strong>Date</strong></th>
+                          </tr>
+                        </thead>
+                        <tbody id="tbody">
+                        {% for donation in donations %}
+                          <tr>
+                            <td>{{ donation.id }}</td>
+                            <td>{{ donation.donor_name }}</td>
+                            <td>{{ donation.currency }}</td>
+                            <td>{{ donation.amount }}</td>
+                            <td>{{ donation.payment_method }}</td>
+                            <td>{{ donation.date }}</td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </main>
+
+        <script src="{% static 'js/apexcharts.min.js' %}"></script>
+    <script src="{% static 'js/apexcharts.custom.js' %}"></script>
+        <script src="{% static 'js/tinycolor-min.js' %}"></script>
+    <script src="{% static 'js/Chart.min.js' %}"></script>
+    <script>
+
+
+
+        var base = {
+        defaultFontFamily: "Overpass, sans-serif",
+        primaryColor: "#1b68ff",
+        secondaryColor: "#4f4f4f",
+        successColor: "#3ad29f",
+        warningColor: "#ffc107",
+        infoColor: "#17a2b8",
+        dangerColor: "#dc3545",
+        darkColor: "#343a40",
+        lightColor: "#f2f3f6",
+    },
+    extend = {
+        primaryColorLight: tinycolor(base.primaryColor).lighten(10).toString(),
+        primaryColorLighter: tinycolor(base.primaryColor).lighten(30).toString(),
+        primaryColorDark: tinycolor(base.primaryColor).darken(10).toString(),
+        primaryColorDarker: tinycolor(base.primaryColor).darken(30).toString(),
+    },
+        chartColors = [base.primaryColor, base.successColor, "#6f42c1", extend.primaryColorLighter],
+    colors = { bodyColor: "#6c757d", headingColor: "#495057", borderColor: "#e9ecef", backgroundColor: "#f8f9fa", mutedColor: "#adb5bd", chartTheme: "light" },
+    darkColor = { bodyColor: "#adb5bd", headingColor: "#e9ecef", borderColor: "#212529", backgroundColor: "#495057", mutedColor: "#adb5bd", chartTheme: "dark" },
+    curentTheme = localStorage.getItem("mode")
+
+
+
+         var donutchart,
+    donutChartOptions = {
+        series: [{{ paypal_total }}, {{ credit_card }},{{ ecocash }}, {{ bank_transfer }}],
+        chart: { type: "donut", height: 305, zoom: { enabled: !1 } },
+        theme: { mode: colors.chartTheme },
+        plotOptions: { pie: { donut: { size: "40%" }, expandOnClick: !1 } },
+        labels: ["Paypal", "Credit Card", "Ecocash", "Bank Transfer"],
+        legend: {
+            position: "bottom",
+            fontFamily: base.defaultFontFamily,
+            fontWeight: 400,
+            labels: { colors: colors.mutedColor, useSeriesColors: !1 },
+            horizontalAlign: "left",
+            fontFamily: base.defaultFontFamily,
+            markers: { width: 10, height: 10, strokeWidth: 0, strokeColor: "#fff", radius: 6 },
+            itemMargin: { horizontal: 10, vertical: 2 },
+            onItemClick: { toggleDataSeries: !0 },
+            onItemHover: { highlightDataSeries: !0 },
+        },
+        stroke: { colors: [colors.borderColor], width: 1 },
+        fill: { opacity: 1, colors: ['#1b68ff', '#3ad29f', '#fd7e14', '#dc3545', '#6f42c1'] },
+    },
+    donutchartCtn = document.querySelector("#donutChart1");
+donutchartCtn && (donutchart = new ApexCharts(donutchartCtn, donutChartOptions)).render();
+
+
+         var donutchart2,
+    donutChart2Options = {
+        series: [{{ usd_total }}, {{ zar_total }},{{ zig_total }}],
+        chart: { type: "donut", height: 305, zoom: { enabled: !1 } },
+        theme: { mode: colors.chartTheme },
+        plotOptions: { pie: { donut: { size: "40%" }, expandOnClick: !1 } },
+        labels: ["United States Dollar", "South African Rand", "Zimbabwe Gold"],
+        legend: {
+            position: "bottom",
+            fontFamily: base.defaultFontFamily,
+            fontWeight: 400,
+            labels: { colors: colors.mutedColor, useSeriesColors: !1 },
+            horizontalAlign: "left",
+            fontFamily: base.defaultFontFamily,
+            markers: { width: 10, height: 10, strokeWidth: 0, strokeColor: "#fff", radius: 6 },
+            itemMargin: { horizontal: 10, vertical: 2 },
+            onItemClick: { toggleDataSeries: !0 },
+            onItemHover: { highlightDataSeries: !0 },
+        },
+        stroke: { colors: [colors.borderColor], width: 1 },
+        fill: { opacity: 1, colors: ['#1b68ff', '#3ad29f', '#fd7e14', '#dc3545', '#6f42c1'] },
+    },
+    donutchartCtn2 = document.querySelector("#donutChart2");
+donutchartCtn2 && (donutchart2 = new ApexCharts(donutchartCtn2, donutChart2Options)).render();
+
+
+</script>
+
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag()
+      {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'UA-56159088-1');
+    </script>
+
+
+</div>
+     {% include 'scripts.html' %}
+
+{% endblock content %}
